@@ -14,6 +14,7 @@ class Document:
         self.characters = []
         self.cursor = 0
         self.filename = file_name
+        self.range_char = 0
 
     def insert(self, character):
         """
@@ -27,8 +28,12 @@ class Document:
         returns: no return
         -------
         """
-        self.chars_property.insert(self.cursor, character)
-        self.cursor += 1
+#       error checking to ensure the input is an integer
+        if not isinstance(character, str):
+            raise TypeError("Wrong type, we need a string")
+
+        self.chars_property.insert(self.cursor_property, character)
+        self.cursor_property += 1
 
     def delete(self):
         """
@@ -37,7 +42,12 @@ class Document:
         Arguments: none
         Returns: none
         """
-        del self.chars_property[self.cursor]
+        try:
+            if self.cursor_property not in range(self.range_property):
+                self.cursor_property = int(self.cursor_property / self.range_property)
+            del self.chars_property[self.cursor_property]
+        except:
+            raise TypeError(f"Cursor outside range")
 
     def save(self):
         """
@@ -64,7 +74,7 @@ class Document:
 
         Returns: none.
         """
-        self.cursor += steps
+        self.cursor_property += steps
 
     def backward(self, steps):
         """
@@ -77,12 +87,16 @@ class Document:
 
         Returns: none
         """
+#       error checking to ensure the input is an integer
+        if not isinstance(steps, int):
+            raise TypeError("Wrong type, we need a number")
 #       used to find the range of the character array to ensure all user inputs can be within the range
-        range_char = len(self.chars_property)
-        if steps not in range(-range_char, range_char):
-            steps = int(steps / range_char)
+        self.range_property = len(self.chars_property)
+#           if statement to make sure the number is within the the character array
+        if steps not in range(-self.range_property, self.range_property):
+            steps = int(steps / self.range_property)
 
-        self.cursor -= steps
+        self.cursor_property -= steps
 
 #   encapsulation for the character array
     @property
@@ -93,6 +107,24 @@ class Document:
     def chars_property(self, value):
         self.characters = value
 
+#   encapsulation for the character array
+    @property
+    def range_property(self):
+        return self.range_char
+
+    @range_property.setter
+    def range_property(self, value):
+        self.range_char = value
+
+#   encapsulation for the cursor
+    @property
+    def cursor_property(self):
+        return self.cursor
+
+    @cursor_property.setter
+    def cursor_property(self, value):
+        self.cursor = value
+
 
 # initialising an object and using the class
 doc = Document("lab_t2.txt")
@@ -101,7 +133,7 @@ characters = 'fake mews'
 for letter in characters:
     doc.insert(letter)
 
-doc.backward(44)
+doc.backward()
 doc.delete()
-doc.insert('n')
+doc.insert('s')
 doc.save()
