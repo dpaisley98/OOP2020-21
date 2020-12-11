@@ -129,11 +129,11 @@ class Document:
 # initialising an object and using the class
 doc = Document("lab_t2.txt")
 characters = 'fake mews'
-drsfgweragfaesrdwf
+
 for letter in characters:
     doc.insert(letter)
 
-doc.backward()fefsef
+doc.backward()
 doc.delete()
 doc.insert('s')
 doc.save()
