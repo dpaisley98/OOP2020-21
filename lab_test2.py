@@ -27,7 +27,7 @@ class Document:
         returns: no return
         -------
         """
-        self.characters.insert(self.cursor, character)
+        self.chars_property.insert(self.cursor, character)
         self.cursor += 1
 
     def delete(self):
@@ -37,7 +37,7 @@ class Document:
         Arguments: none
         Returns: none
         """
-        del self.characters[self.cursor]
+        del self.chars_property[self.cursor]
 
     def save(self):
         """
@@ -47,7 +47,7 @@ class Document:
         Returns: none
         """
         with open(self.filename, 'w') as f:
-            f.write(''.join(self.characters))
+            f.write(''.join(self.chars_property))
 
         print(f"Your file {self.filename} has "
               f"been created.\nPlease check.\n")
@@ -77,7 +77,21 @@ class Document:
 
         Returns: none
         """
+#       used to find the range of the character array to ensure all user inputs can be within the range
+        range_char = len(self.chars_property)
+        if steps not in range(-range_char, range_char):
+            steps = int(steps / range_char)
+
         self.cursor -= steps
+
+#   encapsulation for the character array
+    @property
+    def chars_property(self):
+        return self.characters
+
+    @chars_property.setter
+    def chars_property(self, value):
+        self.characters = value
 
 
 # initialising an object and using the class
@@ -87,7 +101,7 @@ characters = 'fake mews'
 for letter in characters:
     doc.insert(letter)
 
-doc.backward(4)
+doc.backward(44)
 doc.delete()
 doc.insert('n')
 doc.save()
